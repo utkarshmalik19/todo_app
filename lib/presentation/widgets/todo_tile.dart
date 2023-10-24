@@ -22,6 +22,8 @@ class _TodoTileState extends State<TodoTile> {
             });
           }),
           title: Text('Do Homework'),
+          subtitle: Text('Till 5pm'),
+          trailing: Icon(Icons.delete),
         ),
       ),
     );
