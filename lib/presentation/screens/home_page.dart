@@ -14,10 +14,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<TodoItem> todoItems = [];
+
   List<String> days = ['Today', 'Tomorrow', '27 Oct', '28 Oct', '29 Oct'];
-  void addTodoItem(String title, String deadline) {
+  void addTodoItem(String title, String deadline, Color priority) {
     setState(() {
-      todoItems.add(TodoItem(deadline: deadline, title: title));
+      todoItems
+          .add(TodoItem(deadline: deadline, title: title, priority: priority));
     });
   }
 

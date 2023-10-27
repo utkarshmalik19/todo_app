@@ -4,7 +4,7 @@ import 'package:todo_app/presentation/widgets/custom_button.dart';
 import 'package:todo_app/utils/consts.dart';
 
 class AddTodoPage extends StatefulWidget {
-  final Function(String, String) onAddTodo;
+  final Function(String, String, Color) onAddTodo;
   const AddTodoPage({Key? key, required this.onAddTodo}) : super(key: key);
 
   @override
@@ -16,12 +16,26 @@ class _AddTodoPageState extends State<AddTodoPage> {
   final TextEditingController deadlineController = TextEditingController();
   //TodoItem todo = TodoItem(title, deadlineController);
   List<TodoItem> items = [];
-
+  String selectedPriority = 'Medium'; // Default priority
+  List<String> priorities = ['Critical', 'Medium', 'Least'];
+  Color flagColor = Colors.blue;
+  void setFlagColor(){
+     if(selectedPriority == 'Critical'){
+      setState(() {
+        flagColor = Colors.red;
+        print(flagColor);
+      });
+    }else if(selectedPriority == 'Medium'){
+      flagColor = Colors.orange;
+    }else{
+      flagColor = Colors.blue;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Add Todo Item',
           style: TextStyle(color: Colors.greenAccent),
         ),
@@ -29,6 +43,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
               controller: titleController,
@@ -53,11 +68,28 @@ class _AddTodoPageState extends State<AddTodoPage> {
                     labelText: 'Deadline'),
               ),
             ),
+               DropdownButton<String>(
+                style: TextStyle(color: AppConstants.primaryColor, fontSize: 15),
+                borderRadius: BorderRadius.circular(15),
+              value: selectedPriority,
+              items: priorities.map((String priority) {
+                return DropdownMenuItem<String>(
+                  value: priority,
+                  child: Text(priority),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedPriority = newValue ?? 'Medium';
+                });
+              },
+            ),
             CustomButton(buttonText: 'Add Todo',onPressed: () {
                 final title = titleController.text;
                 final deadline = deadlineController.text;
                 if (title.isNotEmpty && deadline.isNotEmpty) {
-                  widget.onAddTodo(title, deadline); // Callback to add todo
+                  setFlagColor();
+                  widget.onAddTodo(title, deadline, flagColor); // Callback to add todo
                   Navigator.pop(context); // Navigate back to HomePage
                 }
               },)

@@ -22,6 +22,7 @@ class _TodoTileState extends State<TodoTile> {
     Color(0xff688cfc)
   ];
 
+  
   @override
   Widget build(BuildContext context) {
     int colorIndex = widget.index % tileColors.length;
@@ -31,7 +32,7 @@ class _TodoTileState extends State<TodoTile> {
       background: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: Container(
-          padding: EdgeInsets.only(left: 16),
+          padding: const EdgeInsets.only(left: 16),
           decoration: BoxDecoration(
               color: Colors.green, borderRadius: BorderRadius.circular(15)),
           child: const Align(
@@ -43,7 +44,7 @@ class _TodoTileState extends State<TodoTile> {
       secondaryBackground: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: Container(
-          padding: EdgeInsets.only(right: 16),
+          padding: const EdgeInsets.only(right: 16),
           decoration: BoxDecoration(
               color: Colors.red, borderRadius: BorderRadius.circular(15)),
           child: const Align(
@@ -81,7 +82,7 @@ class _TodoTileState extends State<TodoTile> {
                 style: TextStyle(color: Colors.black)),
             trailing: Icon(
               Icons.flag,
-              color: Colors.white,
+              color: widget.items.priority,
             ),
           ),
         ),
