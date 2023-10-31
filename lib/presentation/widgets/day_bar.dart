@@ -18,14 +18,14 @@ class _DayBarState extends State<DayBar> {
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Container(
         decoration: BoxDecoration(
-            color: AppConstants.tileColors[colorIndex],
+            
             border: Border.all(width: 1, color: AppConstants.tileColors[colorIndex]),
             borderRadius: BorderRadius.circular(15)),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Text(
             widget.day,
-            style: TextStyle(color: AppConstants.tileTextColors[colorIndex], fontWeight: FontWeight.bold),
+            style: TextStyle(color: AppConstants.tileTextColors[0], fontWeight: FontWeight.bold),
           ),
         ),
       ),

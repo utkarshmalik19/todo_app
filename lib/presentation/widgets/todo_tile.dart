@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/models/todo_item.dart';
+import 'package:todo_app/utils/consts.dart';
 
 class TodoTile extends StatefulWidget {
   final int index;
@@ -62,7 +63,7 @@ class _TodoTileState extends State<TodoTile> {
           child: ListTile(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            tileColor: tileColors[colorIndex],
+            tileColor: AppConstants.tileColors[colorIndex], //tileColors[colorIndex]
             leading: Checkbox(
               activeColor: tileColors[colorIndex],
               overlayColor: MaterialStateProperty.all(Colors.black),
@@ -76,7 +77,7 @@ class _TodoTileState extends State<TodoTile> {
             title: Text(
               widget.items.title,
               style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Roboto'),
             ),
             subtitle: Text(widget.items.deadline,
                 style: TextStyle(color: Colors.black)),
