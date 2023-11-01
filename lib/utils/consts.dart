@@ -30,7 +30,7 @@ class AppConstants {
   //double height = MediaQuery.of(context).size.height;
 
   static TextStyle headerTextStyle =
-      TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.bold);
+      const TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.bold);
   static TextStyle smallTextStyle =
-      TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.bold);
+      const TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.bold);
 }
