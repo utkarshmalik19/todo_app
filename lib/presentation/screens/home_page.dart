@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(
-                height: 20,
+                height: 25,
               ),
               SizedBox(
                 height: 50,

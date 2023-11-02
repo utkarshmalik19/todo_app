@@ -12,7 +12,7 @@ class _AppDrawerState extends State<AppDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        children: [Text('Tasks'), Text('Reminder'), Text('Profile')],
+        children: [Text('Tasks'), Text('Reminder'), Text('Hello')],
       ),
     );
   }
