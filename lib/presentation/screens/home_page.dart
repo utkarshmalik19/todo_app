@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/models/todo_item.dart';
 import 'package:todo_app/presentation/screens/add_page.dart';
 import 'package:todo_app/presentation/widgets/app_drawer.dart';
@@ -21,7 +24,29 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       todoItems
           .add(TodoItem(deadline: deadline, title: title, priority: priority));
+           saveTodoItems(); // Save the updated list to shared preferences
     });
+  }
+Future<void> saveTodoItems() async {
+  final prefs = await SharedPreferences.getInstance();
+  final todoItemsJson = todoItems.map((item) => item.toJson()).toList();
+  await prefs.setStringList('todoItems', todoItemsJson.map((item) => json.encode(item)).toList());
+}
+
+Future<void> loadTodoItems() async {
+  final prefs = await SharedPreferences.getInstance();
+  final todoItemsJson = prefs.getStringList('todoItems');
+  if (todoItemsJson != null) {
+    setState(() {
+      todoItems = todoItemsJson.map((json) => TodoItem.fromJson(jsonDecode(json))).toList();
+    });
+  }
+}
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     loadTodoItems(); // Load saved todo items from shared preferences
   }
 
   @override
