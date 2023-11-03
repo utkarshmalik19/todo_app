@@ -5,7 +5,8 @@ import 'package:todo_app/utils/consts.dart';
 class TodoTile extends StatefulWidget {
   final int index;
   final TodoItem items;
-  const TodoTile({super.key, required this.index, required this.items});
+  final Function(int) onDismissed; // Callback to notify when dismissed
+  const TodoTile({super.key, required this.index, required this.items, required this.onDismissed});
 
   @override
   State<TodoTile> createState() => _TodoTileState();
@@ -29,7 +30,9 @@ class _TodoTileState extends State<TodoTile> {
     int colorIndex = widget.index % tileColors.length;
     return Dismissible(
       key: Key('todo-${widget.index}'),
-      onDismissed: (direction) {},
+      onDismissed: (direction) {
+         widget.onDismissed(widget.index); 
+      },
       background: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: Container(

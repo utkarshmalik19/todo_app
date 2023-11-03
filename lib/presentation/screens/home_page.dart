@@ -24,42 +24,46 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       todoItems
           .add(TodoItem(deadline: deadline, title: title, priority: priority));
-           saveTodoItems(); // Save the updated list to shared preferences
+      saveTodoItems(); // Save the updated list to shared preferences
     });
   }
-Future<void> saveTodoItems() async {
-  final prefs = await SharedPreferences.getInstance();
-  final todoItemsJson = todoItems.map((item) => item.toJson()).toList();
-  await prefs.setStringList('todoItems', todoItemsJson.map((item) => json.encode(item)).toList());
-}
 
-Future<void> loadTodoItems() async {
-  final prefs = await SharedPreferences.getInstance();
-  final todoItemsJson = prefs.getStringList('todoItems');
-  if (todoItemsJson != null) {
-    setState(() {
-      todoItems = todoItemsJson.map((json) => TodoItem.fromJson(jsonDecode(json))).toList();
-    });
+  Future<void> saveTodoItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    final todoItemsJson = todoItems.map((item) => item.toJson()).toList();
+    await prefs.setStringList(
+        'todoItems', todoItemsJson.map((item) => json.encode(item)).toList());
   }
-}
-@override
+
+  Future<void> loadTodoItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    final todoItemsJson = prefs.getStringList('todoItems');
+    if (todoItemsJson != null) {
+      setState(() {
+        todoItems = todoItemsJson
+            .map((json) => TodoItem.fromJson(jsonDecode(json)))
+            .toList();
+      });
+    }
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     loadTodoItems(); // Load saved todo items from shared preferences
+    loadTodoItems(); // Load saved todo items from shared preferences
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       drawer: AppDrawer(),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.greenAccent),
+          iconTheme: IconThemeData(color: Colors.greenAccent),
           title: const Text(
-        "To Do App",
-        style: TextStyle(color: Colors.greenAccent),
-      )),
+            "To Do App",
+            style: TextStyle(color: Colors.greenAccent),
+          )),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -94,6 +98,13 @@ Future<void> loadTodoItems() async {
                   itemBuilder: (context, index) => TodoTile(
                         index: index,
                         items: todoItems[index],
+                        onDismissed: (index) {
+                          setState(() {
+                            todoItems.removeAt(
+                                index); // Remove the item from the list
+                            saveTodoItems(); // Save the updated list to shared preferences
+                          });
+                        },
                       ))
             ],
           ),
