@@ -82,7 +82,7 @@ class _TodoTileState extends State<TodoTile> {
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Roboto'),
             ),
-            subtitle: Text(widget.items.deadline,
+            subtitle: Text("Deadline: ${widget.items.deadline.format(context)}", // Display the formatted deadline
                 style: TextStyle(color: Colors.black)),
             trailing: Icon(
               Icons.flag,

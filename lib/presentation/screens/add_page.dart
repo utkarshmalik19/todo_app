@@ -4,7 +4,7 @@ import 'package:todo_app/presentation/widgets/custom_button.dart';
 import 'package:todo_app/utils/consts.dart';
 
 class AddTodoPage extends StatefulWidget {
-  final Function(String, String, Color) onAddTodo;
+  final Function(String, TimeOfDay, Color) onAddTodo;
   const AddTodoPage({Key? key, required this.onAddTodo}) : super(key: key);
 
   @override
@@ -13,24 +13,23 @@ class AddTodoPage extends StatefulWidget {
 
 class _AddTodoPageState extends State<AddTodoPage> {
   final TextEditingController titleController = TextEditingController();
-  final TextEditingController deadlineController = TextEditingController();
-  //TodoItem todo = TodoItem(title, deadlineController);
+  TimeOfDay? selectedTime;
   List<TodoItem> items = [];
   String selectedPriority = 'Medium'; // Default priority
   List<String> priorities = ['Critical', 'Medium', 'Least'];
   Color flagColor = Colors.blue;
-  void setFlagColor(){
-     if(selectedPriority == 'Critical'){
+  void setFlagColor() {
+    if (selectedPriority == 'Critical') {
       setState(() {
         flagColor = Colors.red;
-        print(flagColor);
       });
-    }else if(selectedPriority == 'Medium'){
+    } else if (selectedPriority == 'Medium') {
       flagColor = Colors.orange;
-    }else{
+    } else {
       flagColor = Colors.blue;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +44,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            //Set title
             TextField(
               controller: titleController,
               decoration: const InputDecoration(
@@ -55,22 +55,38 @@ class _AddTodoPageState extends State<AddTodoPage> {
                       borderSide: BorderSide(color: Colors.greenAccent)),
                   labelText: 'Title'),
             ),
+          // Set deadline
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 20),
-              child: TextField(
-                controller: deadlineController,
-                decoration: const InputDecoration(
-                    labelStyle: TextStyle(color: AppConstants.primaryColor),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.greenAccent)),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.greenAccent)),
-                    labelText: 'Deadline'),
+              child: GestureDetector(
+                onTap: () {
+                  showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  ).then((pickedTime) {
+                    if (pickedTime != null) {
+                      setState(() {
+                        selectedTime = pickedTime;
+                      });
+                    }
+                  });
+                },
+                child: Text(
+                  selectedTime != null
+                      ? 'Deadline : ${selectedTime!.format(context)}'
+                      : 'Select Time',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: selectedTime != null
+                        ? AppConstants.primaryColor
+                        : Colors.white,
+                  ),
+                ),
               ),
             ),
-               DropdownButton<String>(
-                style: TextStyle(color: AppConstants.primaryColor, fontSize: 15),
-                borderRadius: BorderRadius.circular(15),
+            DropdownButton<String>(
+              style: const TextStyle(color: AppConstants.primaryColor, fontSize: 15),
+              borderRadius: BorderRadius.circular(15),
               value: selectedPriority,
               items: priorities.map((String priority) {
                 return DropdownMenuItem<String>(
@@ -84,15 +100,18 @@ class _AddTodoPageState extends State<AddTodoPage> {
                 });
               },
             ),
-            CustomButton(buttonText: 'Add Todo',onPressed: () {
+            CustomButton(
+              buttonText: 'Add Todo',
+              onPressed: () {
                 final title = titleController.text;
-                final deadline = deadlineController.text;
-                if (title.isNotEmpty && deadline.isNotEmpty) {
+                if (title.isNotEmpty && selectedTime != null) {
                   setFlagColor();
-                  widget.onAddTodo(title, deadline, flagColor); // Callback to add todo
+                  widget.onAddTodo(
+                      title, selectedTime!, flagColor); // Callback to add todo
                   Navigator.pop(context); // Navigate back to HomePage
                 }
-              },)
+              },
+            )
           ],
         ),
       ),

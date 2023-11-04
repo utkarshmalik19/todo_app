@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   List<TodoItem> todoItems = [];
 
   List<String> days = ['Today', 'Tomorrow', '27 Oct', '28 Oct', '29 Oct'];
-  void addTodoItem(String title, String deadline, Color priority) {
+  void addTodoItem(String title, TimeOfDay deadline, Color priority) {
     setState(() {
       todoItems
           .add(TodoItem(deadline: deadline, title: title, priority: priority));
