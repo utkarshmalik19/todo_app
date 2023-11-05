@@ -8,6 +8,7 @@ import 'package:todo_app/presentation/widgets/app_drawer.dart';
 import 'package:todo_app/presentation/widgets/day_bar.dart';
 import 'package:todo_app/presentation/widgets/todo_tile.dart';
 import 'package:todo_app/utils/consts.dart';
+import 'package:todo_app/utils/notification_helper.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,9 +19,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<TodoItem> todoItems = [];
+//final NotificationHelper notificationHelper = NotificationHelper();
 
   List<String> days = ['Today', 'Tomorrow', '27 Oct', '28 Oct', '29 Oct'];
   void addTodoItem(String title, TimeOfDay deadline, Color priority) {
+     final now = DateTime.now();
+  final scheduledTime = DateTime(
+    now.year,
+    now.month,
+    now.day,
+    deadline.hour,
+    deadline.minute,
+  );
+  // Schedule the notification
+  // notificationHelper.scheduleNotification(
+  //   todoItems.length, // Use a unique id for each notification
+  //   'Todo Reminder',
+  //   title,
+  //   scheduledTime,
+  // );
     setState(() {
       todoItems
           .add(TodoItem(deadline: deadline, title: title, priority: priority));
